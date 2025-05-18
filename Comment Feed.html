@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Comment Feed with Emojis and Animation</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 20px;
+      background-color: #f9f9f9;
+    }
+
+    .comment-box {
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      transition: transform 0.3s;
+    }
+
+    .comment-box:hover {
+      transform: scale(1.01);
+    }
+
+    .actions {
+      margin-top: 8px;
+    }
+
+    .like-btn, .reply-btn {
+      cursor: pointer;
+      color: #007BFF;
+      background: none;
+      border: none;
+      font-size: 15px;
+      margin-right: 15px;
+      transition: all 0.2s ease;
+    }
+
+    .like-btn:hover, .reply-btn:hover {
+      transform: scale(1.1);
+      color: #0056b3;
+    }
+
+    .like-animate {
+      animation: pop 0.4s;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.4); }
+      100% { transform: scale(1); }
+    }
+
+    .reply-section {
+      margin-top: 10px;
+      display: none;
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    .reply-section input {
+      width: 70%;
+      padding: 6px;
+      margin-right: 5px;
+    }
+
+    .reply-section button {
+      padding: 6px 10px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+    }
+
+    .replies {
+      margin-top: 10px;
+      margin-left: 15px;
+      font-size: 0.9em;
+      color: #333;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>💬 Comment Feed</h2>
+
+  <div id="comment-feed">
+    <div class="comment-box">
+      <p><strong>🌟 John Doe:</strong> This is a great post!</p>
+      <div class="actions">
+        <button class="like-btn" onclick="likeComment(this)">👍 Like (<span class="like-count">0</span>)</button>
+        <button class="reply-btn" onclick="toggleReply(this)">💬 Reply</button>
+      </div>
+      <div class="reply-section">
+        <input type="text" placeholder="Write a reply..." />
+        <button onclick="postReply(this)">Send</button>
+      </div>
+      <div class="replies"></div>
+    </div>
+  </div>
+
+  <script>
+    function likeComment(button) {
+      const countSpan = button.querySelector(".like-count");
+      let count = parseInt(countSpan.textContent);
+      countSpan.textContent = count + 1;
+      button.classList.add("like-animate");
+      setTimeout(() => {
+        button.classList.remove("like-animate");
+      }, 400);
+    }
+
+    function toggleReply(button) {
+      const replySection = button.closest(".comment-box").querySelector(".reply-section");
+      replySection.style.display = replySection.style.display === "block" ? "none" : "block";
+    }
+
+    function postReply(button) {
+      const replyBox = button.previousElementSibling;
+      const replyText = replyBox.value.trim();
+      if (replyText) {
+        const repliesContainer = button.closest(".comment-box").querySelector(".replies");
+        const replyElement = document.createElement("div");
+        replyElement.textContent = "🗨️ You: " + replyText;
+        repliesContainer.appendChild(replyElement);
+        replyBox.value = "";
+      }
+    }
+  </script>
+
+</body>
+</html>
